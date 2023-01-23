@@ -33,3 +33,20 @@ header .logo {
 main {
     padding: 20px;
 }
+
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.game {
+    border: solid 1px black;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    background-color: white;
+    border-radius: 5px;
+}

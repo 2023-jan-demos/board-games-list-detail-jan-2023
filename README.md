@@ -6,6 +6,7 @@ If you work on more than one feature at a time, you are guaranteed to multiply y
 
 ## Making a plan
 
+0. **Think about your data model**
 1. **Make a drawing of your app. Simple "wireframes"**
 1. **Look at the drawing and name the HTML elements you'll need to realize your vision**
 1. **Look at the drawing and imagine using the app. What _state_ do you need to track?**
@@ -25,3 +26,71 @@ Additional considerations:
     -   What needs to live in a persistence layer?
 -   Is there some state we need to initialize?
 -   Ask: should any of this work be abstracted into functions? (i.e., is the work complicated? can it be reused?)
+
+## Data model
+
+- board_games
+    - name
+        - i.e. 'Carcasonne'
+        - string
+    - designer
+        - 'Klaus-Jürgen Wrede'
+        - string
+    - category
+        - 'tile-laying'
+        - string
+    - player_min
+        - 2
+        - int2
+    - player_max
+        - 6
+        - int2
+    - rating
+        - 7.4
+        - decimal (float)
+
+## HTML Setup
+
+### list page
+- empty div to inject list of games
+
+### detail page
+- empty div to inject details about this particular game
+
+## State
+- gamesData
+    - fetch all games
+- gameData
+    - fetch 1 game
+
+## Events
+- page load on the list page
+    - window.addEventListener('load',() => {})
+    - talk to supabase to get all games data
+    - dump the data into state (good habit)
+    - loop through our games in state
+        - for each game, render a game div
+        - then append that div to our HTML skeleton
+    - refactor into a render function
+    - refactor into a display function (good habit)
+
+- page load on the detail page
+- user should be able to see a list of games on load in the home page
+    - when user clicks on list page, they are taken to the detail page (with the href)
+    - window.addEventListener('load',() => {})
+    - talk to supabase to get THIS PARTICULAR GAME'S data
+        - this is new: let's check the docs
+
+```js
+let { data: tabletop_games, error } = await supabase
+  .from('tabletop_games')
+  .eq('id', 2)
+  .select('*');
+```
+    - how do i find ONE item from supabase?
+    - dump the data into state (good habit)
+    - wait, how do i find the id?
+    - let's pull it from the URL
+    - const data = new URLSearchParams(window.location.search)
+    - const id = data.get('id') // we need to add id to the URL in our Anchor tag on the list page <a href=`../detail/?id=${idInSupabase}`>
+- use fetched data to display text on detail page
